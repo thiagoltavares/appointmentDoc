@@ -63,8 +63,14 @@ const AppointmentsProvider: React.FC = ({ children }) => {
     saveInLocalStorage(filteredAppointments);
   };
 
-  const updateAppointment = (appointment: Appointments) => {
-    console.log('test', appointment);
+  const updateAppointment = (receivedAppointment: Appointments) => {
+    const changedAppointments = appointments.map(appointment =>
+      appointment.id === receivedAppointment.id
+        ? receivedAppointment
+        : appointment,
+    );
+    setAppointments(changedAppointments);
+    saveInLocalStorage(changedAppointments);
   };
 
   return (
