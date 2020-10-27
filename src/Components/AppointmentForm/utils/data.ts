@@ -4,7 +4,7 @@ export const doctors = [
   { label: 'Kylo Ren', value: 3 },
 ];
 
-export const reason = [
+export const reasons = [
   { label: 'Headache', value: 1 },
   { label: 'Fever', value: 2 },
   { label: 'Flu', value: 3 },

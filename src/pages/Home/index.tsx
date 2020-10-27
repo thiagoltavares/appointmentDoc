@@ -3,6 +3,7 @@ import React from 'react';
 import { createStyles, Grid, makeStyles, Theme } from '@material-ui/core';
 import AppointmentsList from '../../Components/AppointmentList';
 import AppointmentForm from '../../Components/AppointmentForm';
+import Appoint from '../../Components/AppointmentForm/Appoint';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -24,7 +25,7 @@ const Main: React.FC = () => {
         <AppointmentsList />
       </Grid>
       <Grid item className={classes.listWrapper}>
-        <AppointmentForm />
+        <Appoint />
       </Grid>
     </Grid>
   );
