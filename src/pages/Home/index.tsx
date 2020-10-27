@@ -25,7 +25,7 @@ const Main: React.FC = () => {
         <AppointmentsList />
       </Grid>
       <Grid item className={classes.listWrapper}>
-        <Appoint />
+        <AppointmentForm />
       </Grid>
     </Grid>
   );
