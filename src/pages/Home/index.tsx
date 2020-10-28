@@ -1,18 +1,25 @@
 import React from 'react';
-
-import { createStyles, Grid, makeStyles, Theme } from '@material-ui/core';
-import AppointmentsList from '../../Components/AppointmentList';
-import AppointmentForm from '../../Components/AppointmentForm';
-import Appoint from '../../Components/AppointmentForm/Appoint';
+import { Box, createStyles, makeStyles, Paper, Theme } from '@material-ui/core';
+import AppointmentsList from '../../components/AppointmentList';
+import AppointmentForm from '../../components/AppointmentForm';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     container: {
       display: 'flex',
-      justifyContent: 'space-evenly',
+      alignItems: 'flex-start',
     },
-    listWrapper: {
-      margin: '24px',
+    content: {
+      maxWidth: '1000px',
+      padding: '12px',
+      margin: ' 24px auto',
+    },
+    listWrapper: {},
+    formWrapper: {},
+    paper: {
+      padding: theme.spacing(2),
+      textAlign: 'center',
+      color: theme.palette.text.secondary,
     },
   }),
 );
@@ -20,14 +27,19 @@ const Main: React.FC = () => {
   const classes = useStyles();
 
   return (
-    <Grid item container className={classes.container}>
-      <Grid item className={classes.listWrapper}>
-        <AppointmentsList />
-      </Grid>
-      <Grid item className={classes.listWrapper}>
-        <AppointmentForm />
-      </Grid>
-    </Grid>
+    <Box className={classes.container}>
+      <Box className={`${classes.listWrapper} ${classes.content}`}>
+        <Paper className={classes.paper}>
+          <AppointmentsList />
+        </Paper>
+      </Box>
+
+      <Box className={`${classes.formWrapper} ${classes.content}`}>
+        <Paper className={classes.paper}>
+          <AppointmentForm />
+        </Paper>
+      </Box>
+    </Box>
   );
 };
 

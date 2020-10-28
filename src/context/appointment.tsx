@@ -91,7 +91,9 @@ function useAppointments(): AppointmentsContextData {
   const context = useContext(AppointmentsContext);
 
   if (!context) {
-    throw new Error('useAuth must be used within an AiuthProvider');
+    throw new Error(
+      'useAppointments must be used within an AppointmentsProvider',
+    );
   }
 
   return context;

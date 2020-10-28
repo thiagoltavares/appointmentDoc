@@ -1,17 +1,16 @@
 import React from 'react';
-import { BrowserRouter } from 'react-router-dom';
 import GlobalStyles from './styles/global';
-import Routes from './routes';
 import { AppointmentsProvider } from './context/appointment';
+import Home from './pages/Home';
 
 const App: React.FC = () => {
   return (
-    <BrowserRouter>
+    <>
       <AppointmentsProvider>
-        <Routes />
+        <Home />
       </AppointmentsProvider>
       <GlobalStyles />
-    </BrowserRouter>
+    </>
   );
 };
 
