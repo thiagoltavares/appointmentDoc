@@ -1,5 +1,6 @@
 import React, { createContext, useState, useContext } from 'react';
 import { v4 as uuid } from 'uuid';
+import { DateTime } from 'luxon';
 
 interface Appointments {
   id: string;
@@ -7,6 +8,7 @@ interface Appointments {
   notes: string;
   doctor: string;
   reason: string;
+  formattedDate?: string;
 }
 
 interface AppointmentsContextData {
@@ -14,6 +16,7 @@ interface AppointmentsContextData {
   createAppointment(appointmentData: Omit<Appointments, 'id'>): void;
   deleteAppointment(id: string): void;
   updateAppointment(appointmentData: Appointments): void;
+  getAppointmentById(id: string): Appointments | null;
 }
 
 const AppointmentsContext = createContext<AppointmentsContextData>(
@@ -40,16 +43,24 @@ const AppointmentsProvider: React.FC = ({ children }) => {
     );
   };
 
-  const createAppointment = (
-    appointmentData: Omit<Appointments, 'id'>,
-  ): void => {
-    const { dateTime, doctor, notes, reason } = appointmentData;
+  const getAppointmentById = (id: string): Appointments | null => {
+    const appointment = appointments.find(app => app.id === id);
+
+    return appointment || null;
+  };
+
+  const createAppointment = (appointmentData: Appointments): void => {
+    const { dateTime, doctor, notes, reason, id } = appointmentData;
+
+    const formattedDate = DateTime.fromJSDate(dateTime).toLocaleString();
+
     const newAppointment: Appointments = {
-      id: uuid(),
+      id: id || uuid(),
       dateTime,
       doctor,
       notes,
       reason,
+      formattedDate,
     };
     setAppointments([...appointments, newAppointment]);
     saveInLocalStorage([...appointments, newAppointment]);
@@ -66,7 +77,7 @@ const AppointmentsProvider: React.FC = ({ children }) => {
   const updateAppointment = (receivedAppointment: Appointments) => {
     const changedAppointments = appointments.map(appointment =>
       appointment.id === receivedAppointment.id
-        ? receivedAppointment
+        ? { ...appointment, ...receivedAppointment }
         : appointment,
     );
     setAppointments(changedAppointments);
@@ -80,6 +91,7 @@ const AppointmentsProvider: React.FC = ({ children }) => {
         createAppointment,
         deleteAppointment,
         updateAppointment,
+        getAppointmentById,
       }}
     >
       {children}

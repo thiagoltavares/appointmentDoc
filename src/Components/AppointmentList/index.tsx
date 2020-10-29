@@ -36,13 +36,13 @@ const useStyles = makeStyles((theme: Theme) =>
   }),
 );
 
-const AppointmentsList: React.FC = () => {
+interface AppointmentsListProps {
+  openForm: (id?: string) => void;
+}
+
+const AppointmentsList: React.FC<AppointmentsListProps> = ({ openForm }) => {
   const classes = useStyles();
-  const {
-    appointments,
-    createAppointment,
-    deleteAppointment,
-  } = useAppointments();
+  const { appointments, deleteAppointment } = useAppointments();
 
   function createData(
     id: string,
@@ -50,21 +50,15 @@ const AppointmentsList: React.FC = () => {
     doctor: string,
     reason: string,
     notes: string,
+    formattedDate?: string,
   ) {
-    return { id, dateTime, doctor, reason, notes };
+    return { id, dateTime, doctor, reason, notes, formattedDate };
   }
 
   const appointmentRows = appointments.map(
-    ({ id, dateTime, doctor, reason, notes }) =>
-      createData(id, dateTime, doctor, reason, notes),
+    ({ id, dateTime, doctor, reason, notes, formattedDate }) =>
+      createData(id, dateTime, doctor, reason, notes, formattedDate),
   );
-
-  const appointmentData = {
-    dateTime: new Date(),
-    doctor: 'Thiago Tavares',
-    notes: 'no notes',
-    reason: 'no Reason',
-  };
 
   return (
     <Grid container direction="column" justify="center" alignItems="center">
@@ -82,12 +76,12 @@ const AppointmentsList: React.FC = () => {
         </Grid>
         <Grid item>
           <Button
-            type="submit"
+            type="button"
             variant="outlined"
             color="primary"
             size="small"
             className={classes.button}
-            onClick={() => createAppointment(appointmentData)}
+            onClick={() => openForm()}
           >
             Create new Appointment
           </Button>
@@ -106,28 +100,34 @@ const AppointmentsList: React.FC = () => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {appointmentRows.map(appointmentRow => (
-                <TableRow key={appointmentRow.id}>
-                  <TableCell component="th" scope="row">
-                    {appointmentRow.dateTime.toString()}
-                  </TableCell>
-                  <TableCell align="right">{appointmentRow.doctor}</TableCell>
-                  <TableCell align="right">{appointmentRow.reason}</TableCell>
-                  <TableCell align="right">{appointmentRow.notes}</TableCell>
-                  <TableCell align="right">
-                    <IconButton edge="end" aria-label="edit">
-                      <EditIcon />
-                    </IconButton>
-                    <IconButton
-                      edge="end"
-                      aria-label="delete"
-                      onClick={() => deleteAppointment(appointmentRow.id)}
-                    >
-                      <DeleteIcon />
-                    </IconButton>
-                  </TableCell>
-                </TableRow>
-              ))}
+              {appointmentRows.map(
+                ({ id, doctor, reason, notes, formattedDate }) => (
+                  <TableRow key={id}>
+                    <TableCell component="th" scope="row">
+                      {formattedDate}
+                    </TableCell>
+                    <TableCell align="right">{doctor}</TableCell>
+                    <TableCell align="right">{reason}</TableCell>
+                    <TableCell align="right">{notes}</TableCell>
+                    <TableCell align="right">
+                      <IconButton
+                        edge="end"
+                        aria-label="edit"
+                        onClick={() => openForm(id)}
+                      >
+                        <EditIcon />
+                      </IconButton>
+                      <IconButton
+                        edge="end"
+                        aria-label="delete"
+                        onClick={() => deleteAppointment(id)}
+                      >
+                        <DeleteIcon />
+                      </IconButton>
+                    </TableCell>
+                  </TableRow>
+                ),
+              )}
             </TableBody>
           </Table>
         </TableContainer>
